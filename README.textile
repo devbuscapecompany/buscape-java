@@ -1,0 +1,16 @@
+Wrapper Java para facilitar o uso da API BuscaPé
+
+h2. Fork Specifics
+
+This is a fork of the "original wrapper":http://github.com/netojoaobatista/jbw by netojoaobatista.
+
+h2. Developers
+
+h3. API Documentation 
+
+* "pt-br":http://developer.buscape.com/api/
+* "en":http://developer.buscape.com/en/api/
+
+h3. Dependencies
+
+* "gson version 1.6":http://google-gson.googlecode.com/files/google-gson-stream-1.6.jar
