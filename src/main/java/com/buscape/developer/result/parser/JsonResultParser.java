@@ -121,8 +121,8 @@ public final class JsonResultParser extends AbstractResultParser {
 				list.add(entry);
 			}
 			
-			
-			result.setAddress(list);
+			result.getAddresses().clear();
+			result.getAddresses().addAll(list);
 
 			return result;
 		}
@@ -142,8 +142,8 @@ public final class JsonResultParser extends AbstractResultParser {
 				list.add(entry);
 			}
 			
-			
-			result.setContact(list);
+			result.getContacts().clear();
+			result.getContacts().addAll(list);
 
 			return result;
 		}
@@ -163,8 +163,9 @@ public final class JsonResultParser extends AbstractResultParser {
 				list.add(entry);
 			}
 			
-			
-			result.setFilter(list);
+
+			result.getFilters().clear();
+			result.getFilters().addAll(list);
 
 			return result;
 		}
@@ -183,8 +184,9 @@ public final class JsonResultParser extends AbstractResultParser {
 				LinkType entry = context.deserialize(jsonEntry.get(Messages.getString("Json.link-key")),  LinkType.class);  //$NON-NLS-1$
 				list.add(entry);
 			}
-			
-			result.setLink(list);
+
+			result.getLinks().clear();
+			result.getLinks().addAll(list);
 
 			return result;
 		}
@@ -271,7 +273,8 @@ public final class JsonResultParser extends AbstractResultParser {
 		
 		private SpecificationType deserializeArray(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			SpecificationType result = new SpecificationType();
-			List<ItemListType> items = result.getItem();
+			List<ItemListType> items = result.getItems();
+
 			Type listItemType = new TypeToken<List<ItemListType>>() {}.getType();
 		
 			List<ItemListType> deserializedItems = context.deserialize(json, listItemType);
@@ -282,7 +285,7 @@ public final class JsonResultParser extends AbstractResultParser {
 		
 		private SpecificationType deserializeObject(JsonObject json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			SpecificationType result = new SpecificationType();
-			List<ItemListType> items = result.getItem();
+			List<ItemListType> items = result.getItems();
 			Type listItemType = new TypeToken<List<ItemListType>>() {}.getType();
 			
 			if(json.has(Messages.getString("Json.item-key"))) { //$NON-NLS-1$
