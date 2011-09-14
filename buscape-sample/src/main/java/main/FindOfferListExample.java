@@ -7,8 +7,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import com.buscape.developer.OfferType;
-import com.buscape.developer.Result;
+import com.buscape.developer.result.type.Offer;
+import com.buscape.developer.result.type.Result;
 
 public class FindOfferListExample {
 
@@ -32,7 +32,7 @@ public class FindOfferListExample {
 
 		Result result = (Result) u.unmarshal(new URL("http://sandbox.buscape.com/service/findOfferList/564771466d477a4458664d3d/?productId=222016"));
 
-		for (OfferType offer : result.getOffer()) {
+		for (Offer offer : result.getOffers()) {
 			System.out.println(offer.getId() + "-" + offer.getSeller().getSellerName());
 		}
 
