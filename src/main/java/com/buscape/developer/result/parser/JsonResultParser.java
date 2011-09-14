@@ -12,20 +12,20 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.buscape.developer.result.type.AddressType;
-import com.buscape.developer.result.type.AddressesType;
-import com.buscape.developer.result.type.CategoryType;
-import com.buscape.developer.result.type.ContactType;
-import com.buscape.developer.result.type.ContactsType;
-import com.buscape.developer.result.type.FilterType;
-import com.buscape.developer.result.type.FiltersType;
-import com.buscape.developer.result.type.ItemListType;
-import com.buscape.developer.result.type.LinkType;
-import com.buscape.developer.result.type.LinksType;
-import com.buscape.developer.result.type.OfferType;
-import com.buscape.developer.result.type.ProductType;
+import com.buscape.developer.result.type.Address;
+import com.buscape.developer.result.type.Addresses;
+import com.buscape.developer.result.type.Category;
+import com.buscape.developer.result.type.Contact;
+import com.buscape.developer.result.type.Contacts;
+import com.buscape.developer.result.type.Filter;
+import com.buscape.developer.result.type.Filters;
+import com.buscape.developer.result.type.ItemList;
+import com.buscape.developer.result.type.Link;
+import com.buscape.developer.result.type.Links;
+import com.buscape.developer.result.type.Offer;
+import com.buscape.developer.result.type.Product;
 import com.buscape.developer.result.type.Result;
-import com.buscape.developer.result.type.SpecificationType;
+import com.buscape.developer.result.type.Specification;
 import com.buscape.developer.util.Messages;
 import com.google.gson.FieldNamingStrategy;
 import com.google.gson.Gson;
@@ -50,24 +50,24 @@ public final class JsonResultParser extends AbstractResultParser {
 	private JsonResultParser(String data) {
 		super(data);
 		
-		Type listOfferType = new TypeToken<List<OfferType>>() {}.getType();
-		Type listCategoryType = new TypeToken<List<CategoryType>>() {}.getType();
-		Type listProductType = new TypeToken<List<ProductType>>() {}.getType();
-		Type listItemType = new TypeToken<List<ItemListType>>() {}.getType();
+		Type listOffer = new TypeToken<List<Offer>>() {}.getType();
+		Type listCategory = new TypeToken<List<Category>>() {}.getType();
+		Type listProduct = new TypeToken<List<Product>>() {}.getType();
+		Type listItem = new TypeToken<List<ItemList>>() {}.getType();
 
 		gson = new GsonBuilder()
 			.setFieldNamingStrategy(new XmlAttributeNamingStrategy())
-			.registerTypeAdapter(AddressesType.class, new AddressesTypeDeserializer())
-			.registerTypeAdapter(ContactsType.class, new ContactsTypeDeserializer())
-			.registerTypeAdapter(FiltersType.class, new FiltersTypeDeserializer())
-			.registerTypeAdapter(LinksType.class, new LinksTypeDeserializer())
+			.registerTypeAdapter(Addresses.class, new AddressesDeserializer())
+			.registerTypeAdapter(Contacts.class, new ContactsDeserializer())
+			.registerTypeAdapter(Filters.class, new FiltersDeserializer())
+			.registerTypeAdapter(Links.class, new LinksDeserializer())
 			
-			.registerTypeAdapter(listCategoryType, new CategoryTypeListDeserializer())
-			.registerTypeAdapter(listItemType, new ItemListTypeListDeserializer())
-			.registerTypeAdapter(listOfferType, new OfferTypeListDeserializer())
-			.registerTypeAdapter(listProductType, new ProductTypeListDeserializer())
+			.registerTypeAdapter(listCategory, new CategoryListDeserializer())
+			.registerTypeAdapter(listItem, new ItemListListDeserializer())
+			.registerTypeAdapter(listOffer, new OfferListDeserializer())
+			.registerTypeAdapter(listProduct, new ProductListDeserializer())
 			
-			.registerTypeAdapter(SpecificationType.class, new SpecificationTypeDeserializer())
+			.registerTypeAdapter(Specification.class, new SpecificationDeserializer())
 			
 			.registerTypeAdapter(XMLGregorianCalendar.class, new XMLGregorianCalendarInstanceCreator())
 			.create();
@@ -107,17 +107,17 @@ public final class JsonResultParser extends AbstractResultParser {
 		}
 	}
 
-	private static class AddressesTypeDeserializer implements JsonDeserializer<AddressesType> {
+	private static class AddressesDeserializer implements JsonDeserializer<Addresses> {
 
 		@Override
-		public AddressesType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			AddressesType result = new AddressesType();
-			List<AddressType> list = new ArrayList<AddressType>();
+		public Addresses deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			Addresses result = new Addresses();
+			List<Address> list = new ArrayList<Address>();
 			
 			Iterator<JsonElement> it = json.getAsJsonArray().iterator();
 			while (it.hasNext()) {
 				JsonObject jsonEntry = it.next().getAsJsonObject();
-				AddressType entry = context.deserialize(jsonEntry.get(Messages.getString("Json.address-key")), AddressType.class); //$NON-NLS-1$
+				Address entry = context.deserialize(jsonEntry.get(Messages.getString("Json.address-key")), Address.class); //$NON-NLS-1$
 				list.add(entry);
 			}
 			
@@ -128,17 +128,17 @@ public final class JsonResultParser extends AbstractResultParser {
 		}
 	}
 	
-	private static class ContactsTypeDeserializer implements JsonDeserializer<ContactsType> {
+	private static class ContactsDeserializer implements JsonDeserializer<Contacts> {
 
 		@Override
-		public ContactsType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			ContactsType result = new ContactsType();
-			List<ContactType> list = new ArrayList<ContactType>();
+		public Contacts deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			Contacts result = new Contacts();
+			List<Contact> list = new ArrayList<Contact>();
 			
 			Iterator<JsonElement> it = json.getAsJsonArray().iterator();
 			while (it.hasNext()) {
 				JsonObject jsonEntry = it.next().getAsJsonObject();
-				ContactType entry = context.deserialize(jsonEntry.get(Messages.getString("Json.contact-key")), ContactType.class); //$NON-NLS-1$
+				Contact entry = context.deserialize(jsonEntry.get(Messages.getString("Json.contact-key")), Contact.class); //$NON-NLS-1$
 				list.add(entry);
 			}
 			
@@ -149,17 +149,17 @@ public final class JsonResultParser extends AbstractResultParser {
 		}
 	}
 	
-	private static class FiltersTypeDeserializer implements JsonDeserializer<FiltersType> {
+	private static class FiltersDeserializer implements JsonDeserializer<Filters> {
 
 		@Override
-		public FiltersType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			FiltersType result = new FiltersType();
-			List<FilterType> list = new ArrayList<FilterType>();
+		public Filters deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			Filters result = new Filters();
+			List<Filter> list = new ArrayList<Filter>();
 			
 			Iterator<JsonElement> it = json.getAsJsonArray().iterator();
 			while (it.hasNext()) {
 				JsonObject jsonEntry = it.next().getAsJsonObject();
-				FilterType entry = context.deserialize(jsonEntry.get(Messages.getString("Json.contact-key")), FilterType.class); //$NON-NLS-1$
+				Filter entry = context.deserialize(jsonEntry.get(Messages.getString("Json.contact-key")), Filter.class); //$NON-NLS-1$
 				list.add(entry);
 			}
 			
@@ -171,17 +171,17 @@ public final class JsonResultParser extends AbstractResultParser {
 		}
 	}
 
-	private static class LinksTypeDeserializer implements JsonDeserializer<LinksType> {
+	private static class LinksDeserializer implements JsonDeserializer<Links> {
 
 		@Override
-		public LinksType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			LinksType result = new LinksType();
-			List<LinkType> list = new ArrayList<LinkType>();
+		public Links deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			Links result = new Links();
+			List<Link> list = new ArrayList<Link>();
 			
 			Iterator<JsonElement> it = json.getAsJsonArray().iterator();
 			while (it.hasNext()) {
 				JsonObject jsonEntry = it.next().getAsJsonObject();
-				LinkType entry = context.deserialize(jsonEntry.get(Messages.getString("Json.link-key")),  LinkType.class);  //$NON-NLS-1$
+				Link entry = context.deserialize(jsonEntry.get(Messages.getString("Json.link-key")),  Link.class);  //$NON-NLS-1$
 				list.add(entry);
 			}
 
@@ -192,11 +192,11 @@ public final class JsonResultParser extends AbstractResultParser {
 		}
 	}
 	
-	private static class CategoryTypeListDeserializer implements JsonDeserializer<List<CategoryType>> {
+	private static class CategoryListDeserializer implements JsonDeserializer<List<Category>> {
 
 		@Override
-		public List<CategoryType> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			List<CategoryType> result = new ArrayList<CategoryType>();
+		public List<Category> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			List<Category> result = new ArrayList<Category>();
 
 			Iterator<JsonElement> it = json.getAsJsonArray().iterator();
 			while (it.hasNext()) {
@@ -205,7 +205,7 @@ public final class JsonResultParser extends AbstractResultParser {
 						Messages.getString("Json.subcategory-key") : //$NON-NLS-1$
 						Messages.getString("Json.top5category-key"); //$NON-NLS-1$
 				
-				CategoryType entry = context.deserialize(jsonEntry.get(name),  CategoryType.class);   
+				Category entry = context.deserialize(jsonEntry.get(name),  Category.class);   
 				result.add(entry); 
 			}
 
@@ -213,16 +213,16 @@ public final class JsonResultParser extends AbstractResultParser {
 		}
 	}
 	
-	private static class ItemListTypeListDeserializer implements JsonDeserializer<List<ItemListType>> {
+	private static class ItemListListDeserializer implements JsonDeserializer<List<ItemList>> {
 
 		@Override
-		public List<ItemListType> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			List<ItemListType> result = new ArrayList<ItemListType>();
+		public List<ItemList> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			List<ItemList> result = new ArrayList<ItemList>();
 
 			Iterator<JsonElement> it = json.getAsJsonArray().iterator();
 			while (it.hasNext()) {
 				JsonObject jsonEntry = it.next().getAsJsonObject();
-				ItemListType entry = context.deserialize(jsonEntry.get(Messages.getString("Json.item-key")),  ItemListType.class);   //$NON-NLS-1$
+				ItemList entry = context.deserialize(jsonEntry.get(Messages.getString("Json.item-key")),  ItemList.class);   //$NON-NLS-1$
 				result.add(entry);
 			}
 
@@ -230,16 +230,16 @@ public final class JsonResultParser extends AbstractResultParser {
 		}
 	}
 	
-	private static class OfferTypeListDeserializer implements JsonDeserializer<List<OfferType>> {
+	private static class OfferListDeserializer implements JsonDeserializer<List<Offer>> {
 
 		@Override
-		public List<OfferType> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			List<OfferType> result = new ArrayList<OfferType>();
+		public List<Offer> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			List<Offer> result = new ArrayList<Offer>();
 
 			Iterator<JsonElement> it = json.getAsJsonArray().iterator();
 			while (it.hasNext()) {
 				JsonObject jsonEntry = it.next().getAsJsonObject();
-				OfferType entry = context.deserialize(jsonEntry.get(Messages.getString("Json.offer-key")),  OfferType.class);   //$NON-NLS-1$
+				Offer entry = context.deserialize(jsonEntry.get(Messages.getString("Json.offer-key")),  Offer.class);   //$NON-NLS-1$
 				result.add(entry); 
 			}
 
@@ -247,16 +247,16 @@ public final class JsonResultParser extends AbstractResultParser {
 		}
 	}
 	
-	private static class ProductTypeListDeserializer implements JsonDeserializer<List<ProductType>> {
+	private static class ProductListDeserializer implements JsonDeserializer<List<Product>> {
 
 		@Override
-		public List<ProductType> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			List<ProductType> result = new ArrayList<ProductType>();
+		public List<Product> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			List<Product> result = new ArrayList<Product>();
 
 			Iterator<JsonElement> it = json.getAsJsonArray().iterator();
 			while (it.hasNext()) {
 				JsonObject jsonEntry = it.next().getAsJsonObject();
-				ProductType entry = context.deserialize(jsonEntry.get(Messages.getString("Json.product-key")),  ProductType.class);   //$NON-NLS-1$
+				Product entry = context.deserialize(jsonEntry.get(Messages.getString("Json.product-key")),  Product.class);   //$NON-NLS-1$
 				result.add(entry); 
 			}
 
@@ -264,37 +264,37 @@ public final class JsonResultParser extends AbstractResultParser {
 		}
 	}
 	
-	private static class SpecificationTypeDeserializer implements JsonDeserializer<SpecificationType> {
+	private static class SpecificationDeserializer implements JsonDeserializer<Specification> {
 
 		@Override
-		public SpecificationType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+		public Specification deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			return json.isJsonArray() ? deserializeArray(json, typeOfT, context) : deserializeObject(json.getAsJsonObject(), typeOfT, context);			
 		}
 		
-		private SpecificationType deserializeArray(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			SpecificationType result = new SpecificationType();
-			List<ItemListType> items = result.getItems();
+		private Specification deserializeArray(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			Specification result = new Specification();
+			List<ItemList> items = result.getItems();
 
-			Type listItemType = new TypeToken<List<ItemListType>>() {}.getType();
+			Type listItem = new TypeToken<List<ItemList>>() {}.getType();
 		
-			List<ItemListType> deserializedItems = context.deserialize(json, listItemType);
+			List<ItemList> deserializedItems = context.deserialize(json, listItem);
 			items.addAll(deserializedItems);
 			
 			return result;
 		}
 		
-		private SpecificationType deserializeObject(JsonObject json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			SpecificationType result = new SpecificationType();
-			List<ItemListType> items = result.getItems();
-			Type listItemType = new TypeToken<List<ItemListType>>() {}.getType();
+		private Specification deserializeObject(JsonObject json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			Specification result = new Specification();
+			List<ItemList> items = result.getItems();
+			Type listItem = new TypeToken<List<ItemList>>() {}.getType();
 			
 			if(json.has(Messages.getString("Json.item-key"))) { //$NON-NLS-1$
-				List<ItemListType> deserializedItems = context.deserialize(json.get(Messages.getString("Json.item-key")), listItemType); //$NON-NLS-1$
+				List<ItemList> deserializedItems = context.deserialize(json.get(Messages.getString("Json.item-key")), listItem); //$NON-NLS-1$
 				items.addAll(deserializedItems);			
 			}
 			
 			if(json.has(Messages.getString("Json.links-key"))) { //$NON-NLS-1$
-				LinksType deserializedLinks = context.deserialize(json.get(Messages.getString("Json.links-key")), LinksType.class); //$NON-NLS-1$
+				Links deserializedLinks = context.deserialize(json.get(Messages.getString("Json.links-key")), Links.class); //$NON-NLS-1$
 				result.setLinks(deserializedLinks);
 			}
 			
