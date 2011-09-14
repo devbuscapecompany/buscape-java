@@ -6,19 +6,6 @@
 	<name>Developer Core for Java SDK 1.6</name>
 	<version>1.0.0</version>
 
-	<repositories>
-		<repository>
-			<id>gson</id>
-			<url>http://google-gson.googlecode.com/svn/mavenrepo</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
