@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.buscape</groupId>
-	<artifactId>developer</artifactId>
+	<artifactId>java-developer</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version> <!-- TODO: define a version milestone -->
 	<name>Buscape Developer</name>
