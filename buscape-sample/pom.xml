@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.buscape.developer</groupId>
-	<artifactId>offer-sample-jdk16</artifactId>
+	<artifactId>java-sample</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0.0</version>
-	<name>offer-sample-jdk16</name>
+	<name>Buscape JavaDev Sample</name>
 	<url>http://maven.apache.org</url>
 	<build>
 		<plugins>
