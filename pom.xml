@@ -2,10 +2,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.buscape</groupId>
-	<artifactId>developer</artifactId>
+	<artifactId>buscape-java</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0-SNAPSHOT</version> <!-- TODO: define a version milestone -->
-	<name>Buscape Developer</name>
+	<version>1.0-SNAPSHOT</version>
+	<name>Buscape Java Developer</name>
+
 	<url>http://developer.buscape.com</url>
 
 	<properties>
@@ -14,6 +15,17 @@
 
 	<developers>
 		<!-- TODO: please add the developers -->
+<!--
+		<developer>
+			<id>joaovrmaia</id>
+		</developer>
+		<developer>
+			<id>cartagena</id>
+		</developer>
+		<developer>
+			<id>aleborba</id>
+		</developer>
+-->
 		<developer>
 			<id>gutomaia</id>
 			<name>Guto Maia</name>
@@ -23,12 +35,11 @@
 	</developers>
 
 	<modules>
-		<module>buscape-wrapper</module>
-		<module>buscape-sample</module>
+		<module>buscape-java-api</module>
+		<module>buscape-java-sample</module>
 	</modules>
 
 	<build>
 		<defaultGoal>package</defaultGoal>
 	</build>
-
 </project>
