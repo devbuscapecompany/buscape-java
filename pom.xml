@@ -14,18 +14,8 @@
 	</properties>
 
 	<developers>
-		<!-- TODO: please add the developers -->
-<!--
-		<developer>
-			<id>joaovrmaia</id>
-		</developer>
-		<developer>
-			<id>cartagena</id>
-		</developer>
-		<developer>
-			<id>aleborba</id>
-		</developer>
--->
+		<!-- <developer> <id>joaovrmaia</id> </developer> <developer> <id>cartagena</id> 
+			</developer> <developer> <id>aleborba</id> </developer> -->
 		<developer>
 			<id>gutomaia</id>
 			<name>Guto Maia</name>
@@ -35,11 +25,32 @@
 	</developers>
 
 	<modules>
-		<module>buscape-java-api</module>
+		<module>buscape-java-wrapper</module>
 		<module>buscape-java-sample</module>
 	</modules>
 
 	<build>
 		<defaultGoal>package</defaultGoal>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<compilerVersion>1.6</compilerVersion>
+					<fork>true</fork>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>1.6</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>
