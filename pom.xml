@@ -25,7 +25,7 @@
 	</developers>
 
 	<modules>
-		<module>buscape-java-api</module>
+		<module>buscape-java-wrapper</module>
 		<module>buscape-java-sample</module>
 	</modules>
 
