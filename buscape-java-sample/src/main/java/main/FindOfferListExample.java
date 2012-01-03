@@ -26,12 +26,12 @@ public class FindOfferListExample {
 	public static void main(String[] args) throws JAXBException,
 			MalformedURLException {
 
-		JAXBContext jc = JAXBContext.newInstance("com.buscape.developer");
+		JAXBContext jc = JAXBContext.newInstance("com.buscape.developer.result.type");
 
 		Unmarshaller u = jc.createUnmarshaller();
 
-		Result result = (Result) u.unmarshal(new URL("http://sandbox.buscape.com/service/findOfferList/564771466d477a4458664d3d/?productId=222016"));
-
+		Result result = (Result) u.unmarshal(new URL("http://sandbox.buscape.com/service/findOfferList/564771466d477a4458664d3d/?productId=222016"));		
+		
 		for (Offer offer : result.getOffers()) {
 			System.out.println(offer.getId() + "-" + offer.getSeller().getSellerName());
 		}
