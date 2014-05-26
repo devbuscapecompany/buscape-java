@@ -130,6 +130,7 @@
 	<xs:complexType name="OfferType">
 		<xs:sequence>
 			<xs:element name="offerName" type="xs:string" />
+			<xs:element name="offerShortName" type="xs:string" />
 			<xs:element name="shortDescription" type="xs:string" />
 			<xs:element name="rating" type="RatingType" />
 			<xs:element name="links" type="LinksType" />

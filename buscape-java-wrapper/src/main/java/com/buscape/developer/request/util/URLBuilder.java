@@ -19,10 +19,12 @@ public final class URLBuilder {
 	private String hostName;	
 	private Service service;
 	private String applicationId;
+	private String sourceId;
 	private Country countryCode;
 	private ResultFormat format;
 	private Filter filter;
 	private Parameters parameters;
+	private boolean lomadee;
 	
 	public URLBuilder() {
 		hostName = Messages.getString("URLBuilder.main-url"); //$NON-NLS-1$
@@ -70,9 +72,24 @@ public final class URLBuilder {
 		service = Service.DETAILS_SELLER;
 		return this;
 	}
+	
+	public URLBuilder asCouponsService() {
+		service = Service.COUPONS;
+		return this;
+	}
 		
 	public URLBuilder applicationId(String applicationId) {
 		this.applicationId = applicationId;
+		return this;
+	}
+	
+	public URLBuilder sourceId(String sourceId){
+		this.sourceId = sourceId;
+		return this;
+	}
+	
+	public URLBuilder lomadee(boolean lomadee){
+		this.lomadee = lomadee;
 		return this;
 	}
 	
@@ -213,11 +230,16 @@ public final class URLBuilder {
 		sb.append("/"); //$NON-NLS-1$
 		sb.append(service);
 		sb.append("/"); //$NON-NLS-1$
+		
+		if (lomadee) 
+			sb.append("lomadee/");
+		
 		sb.append(applicationId);
 		sb.append("/"); //$NON-NLS-1$
 		sb.append(countryCode.code());
 		sb.append("/?"); //$NON-NLS-1$
 		sb.append(formatFiltersAndParameters());
+		sb.append("&sourceId="+sourceId);
 		
 		return sb.toString();		
 	}
