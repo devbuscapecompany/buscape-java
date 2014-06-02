@@ -29,6 +29,8 @@ public final class Lomadee {
 	private final Filter filter;
 	
 	private final ResultFormat format;
+	
+	private final boolean sandbox;
 
 	/**
 	 * Constructs a wrapper object to Buscapé API, with <code>BRAZIL</code> as
@@ -40,7 +42,7 @@ public final class Lomadee {
 	 *            default filter for all requests made in API.
 	 */
 	public Lomadee(String applicationId, String sourceId, Filter filter) {
-		this(applicationId, sourceId, filter, Country.BRAZIL, ResultFormat.XML);
+		this(applicationId, sourceId, filter, Country.BRAZIL, ResultFormat.XML, false);
 	}
 	
 	/**
@@ -55,7 +57,7 @@ public final class Lomadee {
 	 * 			  default result format of requests.
 	 */
 	public Lomadee(String applicationId, String sourceId, Filter filter, ResultFormat format) {
-		this(applicationId, sourceId, filter, Country.BRAZIL, format);
+		this(applicationId, sourceId, filter, Country.BRAZIL, format, false);
 	}
 
 	/**
@@ -70,7 +72,7 @@ public final class Lomadee {
 	 * @param format 
 	 * 			  default result format of requests.
 	 */
-	public Lomadee(String applicationId, String sourceId, Filter filter, Country countryCode, ResultFormat format) {
+	public Lomadee(String applicationId, String sourceId, Filter filter, Country countryCode, ResultFormat format, boolean sandbox) {
 		super();
 		this.applicationId = applicationId;
 		this.sourceId = sourceId;
@@ -78,6 +80,7 @@ public final class Lomadee {
 		this.filter = filter;
 		this.format = format;
 		this.factory = new BuscapeFactory();
+		this.sandbox = sandbox;
 	}
 
 	/**
@@ -191,6 +194,37 @@ public final class Lomadee {
 		return callOfferList(new ParametersBuilder().keyword(keyword).categoryId(categoryId).build());
 	}
 	
+	/**
+	 * 
+	 * @param categoryId
+	 * @return
+	 * @throws BuscapeException
+	 */
+	public Result couponsByCategory(int categoryId) throws BuscapeException {
+		return callCoupons(new ParametersBuilder().categoryId(categoryId).build());
+	}
+	
+	/**
+	 * 
+	 * @param keyword
+	 * @return
+	 * @throws BuscapeException
+	 */
+	public Result couponsByKeyword(String keyword) throws BuscapeException {
+		return callCoupons(new ParametersBuilder().keyword(keyword).build());
+	}
+	
+	/**
+	 * 
+	 * @param categoryId
+	 * @param keyword
+	 * @return
+	 * @throws BuscapeException
+	 */
+	public Result coupons(int categoryId, String keyword) throws BuscapeException {
+		return callCoupons(new ParametersBuilder().keyword(keyword).categoryId(categoryId).build());
+	}
+	
 	private Result callCategoryList(Parameters f) throws BuscapeException {
 		return callGenericService(Service.LIST_CATEGORY, f);
 	}
@@ -208,7 +242,7 @@ public final class Lomadee {
 	}
 	
 	private Result callGenericService(Service service, Parameters f) throws BuscapeException {
-		String url = new URLBuilder().service(service).lomadee(true).applicationId(applicationId).sourceId(sourceId).countryCode(countryCode).formatFilter(format).filter(this.filter).parameters(f).build();
+		String url = new URLBuilder().service(service).sandbox(sandbox).lomadee(true).applicationId(applicationId).sourceId(sourceId).countryCode(countryCode).formatFilter(format).filter(this.filter).parameters(f).build();
 		String data = callService(url);
 		AbstractResultParser builder = getResultBuilder(data);
 

@@ -27,6 +27,8 @@ public final class Buscape {
 	private final Filter filter;
 	
 	private final ResultFormat format;
+	
+	private final boolean sandbox;
 
 	/**
 	 * Constructs a wrapper object to Buscapé API, with <code>BRAZIL</code> as
@@ -38,7 +40,7 @@ public final class Buscape {
 	 *            default filter for all requests made in API.
 	 */
 	public Buscape(String applicationId, Filter filter) {
-		this(applicationId, filter, Country.BRAZIL, ResultFormat.XML);
+		this(applicationId, filter, Country.BRAZIL, ResultFormat.XML, false);
 	}
 	
 	/**
@@ -53,7 +55,7 @@ public final class Buscape {
 	 * 			  default result format of requests.
 	 */
 	public Buscape(String applicationId, Filter filter, ResultFormat format) {
-		this(applicationId, filter, Country.BRAZIL, format);
+		this(applicationId, filter, Country.BRAZIL, format, false);
 	}
 
 	/**
@@ -68,13 +70,14 @@ public final class Buscape {
 	 * @param format 
 	 * 			  default result format of requests.
 	 */
-	public Buscape(String applicationId, Filter filter, Country countryCode, ResultFormat format) {
+	public Buscape(String applicationId, Filter filter, Country countryCode, ResultFormat format, boolean sandbox) {
 		super();
 		this.applicationId = applicationId;
 		this.countryCode = countryCode;
 		this.filter = filter;
 		this.format = format;
 		this.factory = new BuscapeFactory();
+		this.sandbox = sandbox;
 	}
 
 	/**
@@ -249,7 +252,7 @@ public final class Buscape {
 	}
 	
 	private Result callGenericService(Service service, Parameters f) throws BuscapeException {
-		String url = new URLBuilder().service(service).applicationId(applicationId).countryCode(countryCode).formatFilter(format).filter(this.filter).parameters(f).build();
+		String url = new URLBuilder().service(service).sandbox(sandbox).applicationId(applicationId).countryCode(countryCode).formatFilter(format).filter(this.filter).parameters(f).build();
 		String data = callService(url);
 		AbstractResultParser builder = getResultBuilder(data);
 

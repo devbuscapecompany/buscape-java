@@ -25,6 +25,7 @@ public final class URLBuilder {
 	private Filter filter;
 	private Parameters parameters;
 	private boolean lomadee;
+	private boolean sandbox;
 	
 	public URLBuilder() {
 		hostName = Messages.getString("URLBuilder.main-url"); //$NON-NLS-1$
@@ -90,6 +91,11 @@ public final class URLBuilder {
 	
 	public URLBuilder lomadee(boolean lomadee){
 		this.lomadee = lomadee;
+		return this;
+	}
+	
+	public URLBuilder sandbox(boolean sandbox){
+		this.sandbox = sandbox;
 		return this;
 	}
 	
@@ -226,6 +232,9 @@ public final class URLBuilder {
 	public String build() {
 		StringBuilder sb = new StringBuilder();
 		
+		if (sandbox)
+			hostName.replace("bws", "sandbox");
+			
 		sb.append(hostName);
 		sb.append("/"); //$NON-NLS-1$
 		sb.append(service);
@@ -240,6 +249,7 @@ public final class URLBuilder {
 		sb.append("/?"); //$NON-NLS-1$
 		sb.append(formatFiltersAndParameters());
 		sb.append("&sourceId="+sourceId);
+		
 		
 		return sb.toString();		
 	}
