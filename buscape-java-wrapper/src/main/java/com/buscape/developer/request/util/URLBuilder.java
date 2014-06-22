@@ -235,9 +235,6 @@ public final class URLBuilder {
 	public String build() {
 		StringBuilder sb = new StringBuilder();
 		
-		if (sandbox)
-			hostName = hostName.replace("bws", "sandbox");
-			
 		sb.append(hostName);
 		sb.append("/"); //$NON-NLS-1$
 		sb.append(service);
