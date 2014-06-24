@@ -32,9 +32,6 @@ public final class URLBuilder {
 		filter = new Filter();
 		parameters= new Parameters();
 		format = ResultFormat.XML;
-		
-		if (sandbox)
-			hostName = hostName.replace("bws", "sandbox");
 	}
 	
 	public URLBuilder service(Service service) {
@@ -232,8 +229,12 @@ public final class URLBuilder {
 		return this;
 	}	
 
-	public String build() {
+	public String build() 
+	{
 		StringBuilder sb = new StringBuilder();
+		
+		if (sandbox)
+			hostName = hostName.replace("bws", "sandbox");
 		
 		sb.append(hostName);
 		sb.append("/"); //$NON-NLS-1$
@@ -250,7 +251,6 @@ public final class URLBuilder {
 		sb.append(formatFiltersAndParameters());
 		sb.append("&sourceId="+sourceId);
 		
-		
 		return sb.toString();		
 	}
 
@@ -258,7 +258,7 @@ public final class URLBuilder {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.putAll(filter.asMap());
 		map.putAll(parameters.asMap());
-		map.put(this.hostName.toString(), this.format.toString()); //$NON-NLS-1$
+		map.put(Messages.getString("URLBuilder.format"), this.format.toString()); //$NON-NLS-1$
 		
 		StringBuilder sb = new StringBuilder();
 		

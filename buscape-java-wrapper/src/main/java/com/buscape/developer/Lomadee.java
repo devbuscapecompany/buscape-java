@@ -255,7 +255,7 @@ public final class Lomadee {
 			
 			return request.getResponse();
 		} catch (Exception e) {
-			throw new BuscapeException(String.format("Erro on calling service: %s.", url), e); //$NON-NLS-1$
+			throw new BuscapeException(String.format("Error on calling service: %s.", url), e); //$NON-NLS-1$
 		}
 	}
 	
