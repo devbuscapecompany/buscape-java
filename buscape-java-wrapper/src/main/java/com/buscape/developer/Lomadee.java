@@ -16,9 +16,11 @@ import com.buscape.developer.result.type.Result;
  * 
  * @author neto
  */
-public final class Buscape {
+public final class Lomadee {
 
 	private final String applicationId;
+	
+	private final String sourceId;
 
 	private final BuscapeFactory factory;
 
@@ -39,8 +41,8 @@ public final class Buscape {
 	 * @param filter
 	 *            default filter for all requests made in API.
 	 */
-	public Buscape(String applicationId, Filter filter) {
-		this(applicationId, filter, Country.BRAZIL, ResultFormat.XML, false);
+	public Lomadee(String applicationId, String sourceId, Filter filter) {
+		this(applicationId, sourceId, filter, Country.BRAZIL, ResultFormat.XML, false);
 	}
 	
 	/**
@@ -54,8 +56,8 @@ public final class Buscape {
 	 * @param format 
 	 * 			  default result format of requests.
 	 */
-	public Buscape(String applicationId, Filter filter, ResultFormat format) {
-		this(applicationId, filter, Country.BRAZIL, format, false);
+	public Lomadee(String applicationId, String sourceId, Filter filter, ResultFormat format) {
+		this(applicationId, sourceId, filter, Country.BRAZIL, format, false);
 	}
 
 	/**
@@ -70,9 +72,10 @@ public final class Buscape {
 	 * @param format 
 	 * 			  default result format of requests.
 	 */
-	public Buscape(String applicationId, Filter filter, Country countryCode, ResultFormat format, boolean sandbox) {
+	public Lomadee(String applicationId, String sourceId, Filter filter, Country countryCode, ResultFormat format, boolean sandbox) {
 		super();
 		this.applicationId = applicationId;
+		this.sourceId = sourceId;
 		this.countryCode = countryCode;
 		this.filter = filter;
 		this.format = format;
@@ -100,6 +103,17 @@ public final class Buscape {
 	 */
 	public Result categoryList(String keyword) throws BuscapeException {
 		return callCategoryList(new ParametersBuilder().keyword(keyword).build());
+	}
+	
+	/**
+	 * Calls the Product List (<i>findProductList</i>) service and return a {@link Result} object
+	 * containing the result of this request. 
+	 * @param categoryId TODO
+	 * @return a {@link Result} object populated with information of response.
+	 * @throws BuscapeException 
+	 */
+	public Result productList(int categoryId, String keyword) throws BuscapeException {
+		return callProductList(new ParametersBuilder().categoryId(categoryId).keyword(keyword).build());
 	}
 	
 	/**
@@ -181,47 +195,35 @@ public final class Buscape {
 	}
 	
 	/**
-	 * Calls the Popular Products List (<i>topProducts</i>) service and return a {@link Result} object
-	 * containing the result of this request.
-	 * @return a {@link Result} object populated with information of response.
-	 * @throws BuscapeException 
+	 * 
+	 * @param categoryId
+	 * @return
+	 * @throws BuscapeException
 	 */
-	public Result popularProductList() throws BuscapeException {
-		return callTopProducts(new ParametersBuilder().build());
+	public Result couponsByCategory(int categoryId) throws BuscapeException {
+		return callCoupons(new ParametersBuilder().categoryId(categoryId).build());
 	}
 	
 	/**
-	 * Calls the User Rating (<i>viewUserRatings</i>) service and return a {@link Result} object
-	 * containing the result of this request.
-	 * @param productId TODO
-	 * @return a {@link Result} object populated with information of response.
-	 * @throws BuscapeException 
+	 * 
+	 * @param keyword
+	 * @return
+	 * @throws BuscapeException
 	 */
-	public Result userRating(int productId) throws BuscapeException {
-		return callUserRating(new ParametersBuilder().productId(productId).build());
+	public Result couponsByKeyword(String keyword) throws BuscapeException {
+		return callCoupons(new ParametersBuilder().keyword(keyword).build());
 	}
 	
 	/**
-	 * Calls the Details of a Product (<i>viewProductDetails</i>) service and return a {@link Result} object
-	 * containing the result of this request.
-	 * @param productId TODO
-	 * @return a {@link Result} object populated with information of response.
-	 * @throws BuscapeException 
+	 * 
+	 * @param categoryId
+	 * @param keyword
+	 * @return
+	 * @throws BuscapeException
 	 */
-	public Result productDetails(int productId) throws BuscapeException {
-		return callProductDetails(new ParametersBuilder().productId(productId).build());
+	public Result coupons(int categoryId, String keyword) throws BuscapeException {
+		return callCoupons(new ParametersBuilder().keyword(keyword).categoryId(categoryId).build());
 	}
-	
-	/**
-	 * Calls the Details of a Seller (<i>viewSellerDetails</i>) service and return a {@link Result} object
-	 * containing the result of this request.
-	 * @param sellerId TODO
-	 * @return a {@link Result} object populated with information of response.
-	 * @throws BuscapeException 
-	 */
-	public Result sellerDetails(int sellerId) throws BuscapeException {		
-		return callSellerDetails(new ParametersBuilder().sellerId(sellerId).build());
-	}	
 	
 	private Result callCategoryList(Parameters f) throws BuscapeException {
 		return callGenericService(Service.LIST_CATEGORY, f);
@@ -235,24 +237,12 @@ public final class Buscape {
 		return callGenericService(Service.LIST_OFFER, f);
 	}
 	
-	private Result callTopProducts(Parameters f) throws BuscapeException {
-		return callGenericService(Service.TOP_PRODUCTS, f);
-	}
-	
-	private Result callUserRating(Parameters f) throws BuscapeException {
-		return callGenericService(Service.USER_RATING, f);
-	}
-	
-	private Result callProductDetails(Parameters f) throws BuscapeException {
-		return callGenericService(Service.DETAILS_PRODUCT, f);
-	}
-	
-	private Result callSellerDetails(Parameters f) throws BuscapeException {
-		return callGenericService(Service.DETAILS_SELLER, f);
+	private Result callCoupons(Parameters f) throws BuscapeException {
+		return callGenericService(Service.COUPONS, f);
 	}
 	
 	private Result callGenericService(Service service, Parameters f) throws BuscapeException {
-		String url = new URLBuilder().service(service).sandbox(sandbox).applicationId(applicationId).countryCode(countryCode).formatFilter(format).filter(this.filter).parameters(f).build();
+		String url = new URLBuilder().service(service).sandbox(sandbox).lomadee(true).applicationId(applicationId).sourceId(sourceId).countryCode(countryCode).formatFilter(format).filter(this.filter).parameters(f).build();
 		String data = callService(url);
 		AbstractResultParser builder = getResultBuilder(data);
 
@@ -265,7 +255,7 @@ public final class Buscape {
 			
 			return request.getResponse();
 		} catch (Exception e) {
-			throw new BuscapeException(String.format("Erro on calling service: %s.", url), e); //$NON-NLS-1$
+			throw new BuscapeException(String.format("Error on calling service: %s.", url), e); //$NON-NLS-1$
 		}
 	}
 	
